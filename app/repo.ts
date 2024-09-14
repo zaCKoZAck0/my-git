@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { deflateSync, unzipSync,  } from 'zlib';
+import { deflateSync, inflateSync, unzipSync,  } from 'zlib';
 import { createHash } from 'crypto';
 
 export class GitRepository {
@@ -40,7 +40,7 @@ export class GitRepository {
 
     lsTree(hash: string, nameOnly: boolean): string {
         const tree = fs.readFileSync(`.git/objects/${hash.slice(0, 2)}/${hash.slice(2)}`);
-        const uncompressed = unzipSync(tree);
+        const uncompressed = inflateSync(tree);
         const entries = uncompressed.toString().split('\0').slice(1, -1);
         return entries.join("\n");
     }
