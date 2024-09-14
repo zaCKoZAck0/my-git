@@ -51,6 +51,6 @@ export class GitRepository {
                 return acc;
             }, [])
             ;
-        return entries.join("\n").trimEnd();
+        return entries.join("\n");
     }
 }
