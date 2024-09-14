@@ -1,24 +1,28 @@
-import * as fs from 'fs';
+import { GitRepository } from "./repo";
 
 const args = process.argv.slice(2);
 const command = args[0];
 
+// You can use print statements as follows for debugging, they'll be visible when running tests.
+console.log("Logs from your program will appear here!");
+
 enum Commands {
-    Init = "init",
+    INIT = "init",
+    CAT_FILE = "cat-file",
 }
 
-switch (command) {
-    case Commands.Init:
-        // You can use print statements as follows for debugging, they'll be visible when running tests.
-        console.log("Logs from your program will appear here!");
+const repo = new GitRepository();
 
-        // Uncomment this block to pass the first stage
-        fs.mkdirSync(".git", { recursive: true });
-        fs.mkdirSync(".git/objects", { recursive: true });
-        fs.mkdirSync(".git/refs", { recursive: true });
-        fs.writeFileSync(".git/HEAD", "ref: refs/heads/main\n");
-        console.log("Initialized git directory");
+switch (command) {
+    case Commands.INIT:
+        repo.init();
         break;
+
+    case Commands.CAT_FILE:
+        const hash = args[1];
+        repo.catFile(hash);
+        break;
+        
     default:
         throw new Error(`Unknown command ${command}`);
 }
