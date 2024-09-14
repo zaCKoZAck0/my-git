@@ -53,4 +53,10 @@ export class GitRepository {
             ;
         return entries.join("\n");
     }
+
+    writeTree(): string {
+        const tree = fs.readdirSync(".")
+        console.log(tree)
+        return ""
+    } 
 }
