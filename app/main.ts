@@ -23,20 +23,20 @@ switch (command) {
     case Commands.CAT_FILE:
         const hash = args[2];
         const contents: string =  repo.catFile(hash);
-        console.log(contents);
+        process.stdout.write(contents);
         break;
     
     case Commands.HASH_OBJECT:
         const write = args.includes("--write") || args.includes("-w");
         const filePath = args[args.length - 1];
         const hashedObject: string = repo.hashObject(filePath, write);
-        console.log(hashedObject);
+        process.stdout.write(hashedObject);
         break;
     case Commands.LS_TREE:
         const nameOnly = args.includes("--name-only");
         const treeHash = args[args.length - 1];
         const tree: string = repo.lsTree(treeHash, nameOnly);
-        console.log(tree);
+        process.stdout.write(tree);
         break;
     default:
         throw new Error(`Unknown command ${command}`);
