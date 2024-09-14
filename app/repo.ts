@@ -13,6 +13,7 @@ export class GitRepository {
     catFile(hash: string) {
         const object = fs.readFileSync(`.git/objects/${hash.slice(0, 2)}/${hash.slice(2)}`);
         const decompressed = unzipSync(object);
-        process.stdout.write(decompressed.subarray(1).toString()); 
+        const nullByteIndex = decompressed.indexOf(0);
+        process.stdout.write(decompressed.subarray(nullByteIndex + 1).toString()); 
     }
 }
