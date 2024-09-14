@@ -41,7 +41,16 @@ export class GitRepository {
     lsTree(hash: string, nameOnly: boolean): string {
         const tree = fs.readFileSync(`.git/objects/${hash.slice(0, 2)}/${hash.slice(2)}`);
         const uncompressed = inflateSync(tree);
-        const entries = uncompressed.toString().split('\0').slice(1, -1);
+        const entries = uncompressed
+            .toString()
+            .split('\0')
+            .slice(1, -1)
+            .reduce((acc: string[], entry: string) => {
+                const [mode, name, hash] = entry.split(' ');
+                acc.push(nameOnly ? name : `${mode} ${hash} ${name}`);
+                return acc;
+            }, [])
+            ;
         return entries.join("\n");
     }
 }
