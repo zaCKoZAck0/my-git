@@ -39,7 +39,7 @@ export class GitRepository {
     }
 
     lsTree(hash: string, nameOnly: boolean): string {
-        const tree = fs.readFileSync(`.git/object/${hash.slice(0, 2)}/${hash.slice(2)}`);
+        const tree = fs.readFileSync(`.git/objects/${hash.slice(0, 2)}/${hash.slice(2)}`);
         const uncompressed = unzipSync(tree);
         const entries: string[] = [];
         let index = 0;
