@@ -36,7 +36,7 @@ switch (command) {
         const nameOnly = args.includes("--name-only");
         const treeHash = args[args.length - 1];
         const tree: string = repo.lsTree(treeHash, nameOnly);
-        process.stdout.write(tree);
+        console.log(tree);
         break;
     default:
         throw new Error(`Unknown command ${command}`);
