@@ -3,22 +3,27 @@ import { deflateSync, unzipSync,  } from 'zlib';
 import { createHash } from 'crypto';
 
 export class GitRepository {
-    init() {
+    init(): boolean {
+        try {
         fs.mkdirSync(".git", { recursive: true });
         fs.mkdirSync(".git/objects", { recursive: true });
         fs.mkdirSync(".git/refs", { recursive: true });
         fs.writeFileSync(".git/HEAD", "ref: refs/heads/main\n");
-        console.log("Initialized git directory");
+        return true;
+        } catch (error) {
+            console.error("Failed to initialize git directory", error);
+            return false;
+        }
     }
 
-    catFile(hash: string) {
+    catFile(hash: string): string {
         const object = fs.readFileSync(`.git/objects/${hash.slice(0, 2)}/${hash.slice(2)}`);
         const decompressed = unzipSync(object);
         const nullByteIndex = decompressed.indexOf(0);
-        process.stdout.write(decompressed.subarray(nullByteIndex + 1).toString()); 
+        return decompressed.subarray(nullByteIndex + 1).toString(); 
     }
 
-    hashObject(filePath: string, write: boolean) {
+    hashObject(filePath: string, write: boolean): string {
         const data = fs.readFileSync(filePath);
         const header = `blob ${data.length}\0`;
         const store = header + data;
@@ -30,6 +35,20 @@ export class GitRepository {
             fs.mkdirSync(`.git/objects/${hash.slice(0, 2)}`, { recursive: true });
             fs.writeFileSync(objectPath, compressed);
         }
-        process.stdout.write(hash);
+        return hash;
+    }
+
+    lsTree(nameOnly: boolean): string {
+        const tree = fs.readFileSync(".git/index");
+        const entries = [];
+        let index = 0;
+        while (index < tree.length) {
+            const entry = tree.slice(index, index + 62);
+            const nameEnd = entry.indexOf(0);
+            const name = entry.slice(57, nameEnd).toString();
+            entries.push(name);
+            index += 62 + nameEnd + 1;
+        }
+        return entries.join("\n");
     }
 }
