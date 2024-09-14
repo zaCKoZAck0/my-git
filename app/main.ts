@@ -35,6 +35,7 @@ switch (command) {
     case Commands.LS_TREE:
         const nameOnly = args.includes("--name-only");
         const treeHash = args[args.length - 1];
+        console.log(nameOnly, treeHash);
         const tree: string = repo.lsTree(treeHash, nameOnly);
         console.log(tree);
         break;
