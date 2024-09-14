@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { unzipSync } from 'zlib';
+import { deflateSync, unzipSync,  } from 'zlib';
 import { createHash } from 'crypto';
 
 export class GitRepository {
@@ -25,9 +25,10 @@ export class GitRepository {
         const hash = createHash('sha1').update(store).digest('hex');
         const objectPath = `.git/objects/${hash.slice(0, 2)}/${hash.slice(2)}`;
         // Check if the same object already exists in repository and if the write flag is set
-        if (!fs.existsSync(objectPath)) {
+        if (write && !fs.existsSync(objectPath)) {
+            const compressed = deflateSync(store);
             fs.mkdirSync(`.git/objects/${hash.slice(0, 2)}`, { recursive: true });
-            fs.writeFileSync(objectPath, store);
+            fs.writeFileSync(objectPath, compressed);
         }
         process.stdout.write(hash);
     }
