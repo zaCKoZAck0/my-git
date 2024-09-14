@@ -3,9 +3,6 @@ import { GitRepository } from "./repo";
 const args = process.argv.slice(2);
 const command = args[0];
 
-// You can use print statements as follows for debugging, they'll be visible when running tests.
-console.log("Logs from your program will appear here!");
-
 enum Commands {
     INIT = "init",
     CAT_FILE = "cat-file",
