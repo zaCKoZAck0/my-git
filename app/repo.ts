@@ -42,7 +42,7 @@ export class GitRepository {
         const tree = fs.readFileSync(".git/index");
         const entries: string[] = [];
         let index = 0;
-        console.log(tree);
+        console.log(tree.toString());
         return entries.join("\n");
     }
 }
