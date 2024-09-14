@@ -19,7 +19,7 @@ switch (command) {
         break;
 
     case Commands.CAT_FILE:
-        const hash = args[1];
+        const hash = args[2];
         repo.catFile(hash);
         break;
         
