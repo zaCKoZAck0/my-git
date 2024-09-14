@@ -40,15 +40,9 @@ export class GitRepository {
 
     lsTree(nameOnly: boolean): string {
         const tree = fs.readFileSync(".git/index");
-        const entries = [];
+        const entries: string[] = [];
         let index = 0;
-        while (index < tree.length) {
-            const entry = tree.slice(index, index + 62);
-            const nameEnd = entry.indexOf(0);
-            const name = entry.slice(57, nameEnd).toString();
-            entries.push(name);
-            index += 62 + nameEnd + 1;
-        }
+        console.log(tree);
         return entries.join("\n");
     }
 }
