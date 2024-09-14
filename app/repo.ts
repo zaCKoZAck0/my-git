@@ -43,7 +43,7 @@ export class GitRepository {
         const uncompressed = unzipSync(tree);
         const entries: string[] = [];
         let index = 0;
-        console.log(uncompressed.toString());
+        console.log(uncompressed.toString().split('\0'));
         return entries.join("\n");
     }
 }
