@@ -18,7 +18,7 @@ export class GitRepository {
 
     catFile(hash: string): string {
         const object = fs.readFileSync(`.git/objects/${hash.slice(0, 2)}/${hash.slice(2)}`);
-        const decompressed = unzipSync(object);
+        const decompressed = inflateSync(object);
         const nullByteIndex = decompressed.indexOf(0);
         return decompressed.subarray(nullByteIndex + 1).toString(); 
     }
