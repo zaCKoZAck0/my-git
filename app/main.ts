@@ -8,6 +8,7 @@ enum Commands {
     CAT_FILE = "cat-file",
     HASH_OBJECT = "hash-object",
     LS_TREE = "ls-tree",
+    WRITE_TREE = "write-tree",
 }
 
 const repo = new GitRepository();
@@ -37,6 +38,10 @@ switch (command) {
         const treeHash = args[args.length - 1];
         const tree: string = repo.lsTree(treeHash, nameOnly);
         console.log(tree);
+        break;
+    case Commands.WRITE_TREE:
+        const newTreeHash = repo.writeTree();
+        console.log(newTreeHash);
         break;
     default:
         throw new Error(`Unknown command ${command}`);
